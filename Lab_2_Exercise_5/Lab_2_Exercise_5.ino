@@ -110,6 +110,18 @@ void loop () {
   
   
   for (int state = 0; state <= numPins*3;){ //begin for 2
+    if ((millis() - steadyTime) >= (timeDifference)) {
+      angle = state*30;
+      servoOne.write(angle);
+      
+      Serial.print("Angle: ");
+      Serial.println(angle);
+    
+    }
+  
+  
+  
+  
     if ((millis() - steadyTime) >= timeDifference){ //begin if 1
       
       
@@ -118,8 +130,6 @@ void loop () {
       Serial.println(state);
       */
       
-      angle = (maxAngle/(numPins*3))*state;
-      servoOne.write(angle);
       
       
       

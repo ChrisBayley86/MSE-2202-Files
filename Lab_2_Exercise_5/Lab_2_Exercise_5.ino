@@ -110,6 +110,9 @@ void loop () {
   
   
   for (int state = 0; state <= numPins*3;){ //begin for 2
+   
+   
+   /*
     if ((millis() - steadyTime) >= (timeDifference)) {
       angle = state*30;
       servoOne.write(angle);
@@ -119,7 +122,7 @@ void loop () {
     
     }
   
-  
+  */
   
   
     if ((millis() - steadyTime) >= timeDifference){ //begin if 1
@@ -129,8 +132,9 @@ void loop () {
       Serial.print("State: ");
       Serial.println(state);
       */
-      
-      
+      if (state > ((numPins*3)/2)) {
+        turnCW == true;
+      }
       
       
       //Loop-checking of the i-th pin's state.
@@ -139,18 +143,20 @@ void loop () {
         if ( (state == pins[i][3]) || (state == pins[i][4]) ){ //begin if 2
           digitalWrite(pins[i][0],HIGH);
           
-          /*if (turnCW == true) {
-            angle += (maxAngle/numPins)*i;
+          if (turnCW == true) {
+            angle += (maxAngle/numPins)*state;
           }
           else {
-            angle -=(maxAngle/numPins)*i;
+            angle -= (maxAngle/numPins)*state;
           }
-          servoOne.write(
-          */
+          servoOne.write(angle);
           
-          /*Serial.println();
+          
+          Serial.println();
           Serial.println(state);
-          Serial.println();*/
+          Serial.println();
+          Serial.print("Angle: ");
+          Serial.println(angle);
           
         } // end if 2
         

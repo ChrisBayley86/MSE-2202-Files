@@ -15,7 +15,7 @@ void setup() {
   const int pot = A0;
   const int dpdtSwitch = 3;
   const int button = 2;
-  const int servo
+  
   
   Serial.begin(9600);
   
@@ -38,6 +38,14 @@ void setup() {
   //digitalWrite(dpdtSwitch, HIGH);
   //the above line enables the internal
   //pull-up resistor.
+  
+  
+  //Code for the Servo
+  //const int servoPin = 9;
+  Servo servoOne; //Declaring a new servo
+  int angle = 0;
+  servoOne.attach(9);
+  const int maxAngle = 180;
   
 }
 
@@ -89,6 +97,14 @@ void loop () {
   const int dpdtSwitch = 3;
   const int button = 2;
   
+  //Code for the Servo
+  int angle = 0;
+  Servo servoOne;
+  servoOne.attach(9);
+  const int maxAngle = 180;
+  bool turnCW = false;
+  servoOne.write(angle);
+  
   
   
   
@@ -102,12 +118,25 @@ void loop () {
       Serial.println(state);
       */
       
+      angle = (maxAngle/(numPins*3))*state;
+      servoOne.write(angle);
+      
+      
       
       //Loop-checking of the i-th pin's state.
       for (int i = 0; i <= numPins; i++){ //begin for 4
         
         if ( (state == pins[i][3]) || (state == pins[i][4]) ){ //begin if 2
           digitalWrite(pins[i][0],HIGH);
+          
+          /*if (turnCW == true) {
+            angle += (maxAngle/numPins)*i;
+          }
+          else {
+            angle -=(maxAngle/numPins)*i;
+          }
+          servoOne.write(
+          */
           
           /*Serial.println();
           Serial.println(state);

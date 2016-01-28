@@ -51,6 +51,8 @@ void setup() {
 
 void loop () {
   
+  //#define DEBUG_BUTTON
+  
  
   //Setting up the pins array
   const int ledLifeDuration = 2;
@@ -206,14 +208,18 @@ void loop () {
      tempTime += increment;
      timeDifference = tempTime; 
      //timeDifference += 30;
+     #ifdef DEBUG_BUTTON
      Serial.print("INCREMENT ");
      Serial.println(timeDifference);
+     #endif
    }
    else if ( (digitalRead(dpdtSwitch) == LOW) /*&& (stateLock == 1)*/ && (digitalRead(button) == HIGH) ) {
      //stateLock = 0;
      tempTime = 0;
+     #ifdef DEBUG_BUTTON
      Serial.print("RELEASE ");
      Serial.println(timeDifference);
+     #endif
    }
    else if ( (digitalRead(dpdtSwitch) == HIGH) && (stateLock == 0) ) {
      timeDifference = analogRead(pot);

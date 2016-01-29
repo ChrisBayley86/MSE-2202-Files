@@ -28,12 +28,12 @@ I2CEncoder encoder_LeftMotor;
 // Uncomment keywords to enable debugging output
 
 #define DEBUG_MODE_DISPLAY
-#define DEBUG_MOTORS
+//#define DEBUG_MOTORS
 //#define DEBUG_LINE_TRACKERS
-#define DEBUG_ENCODERS
-#define DEBUG_ULTRASONIC
-#define DEBUG_LINE_TRACKER_CALIBRATION
-#define DEBUG_MOTOR_CALIBRATION
+//#define DEBUG_ENCODERS
+//#define DEBUG_ULTRASONIC
+//#define DEBUG_LINE_TRACKER_CALIBRATION
+//#define DEBUG_MOTOR_CALIBRATION
 //#define DEBUG_CASE
 #define LINE_TRACKING_CASES
 
@@ -279,6 +279,12 @@ void loop()
 
     case 1:    //Robot Run after 3 seconds
       {
+        unsigned int pastCondition = 0;
+        unsigned int currentCondition = 0;
+        unsigned int previousTime = millis();
+        
+        
+        
         if (bt_3_S_Time_Up)
         {
           readLineTrackers();
@@ -330,8 +336,12 @@ void loop()
           }
           **************************************************************************************/
 
+/*
           if (bt_Motors_Enabled) {
-            pastCondition = currentCondition;
+            if ((millis() - previousTime) >= 50) {
+              pastCondition = currentCondition;
+              previousTime = millis();
+            }
 
             //If none
             if ( !(
@@ -345,7 +355,7 @@ void loop()
 #endif
               currentCondition = 0;
 
-              if (pastCondition == 1 {
+              if (pastCondition == 1) {
               //Turn L
               servo_LeftMotor.writeMicroseconds(1500);
                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
@@ -353,7 +363,7 @@ void loop()
                 Serial.println("Turn Left");
 #endif
               }
-              else if (pastCondition == 3 {
+              else if (pastCondition == 3) {
               //Turn R
               servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
                 servo_RightMotor.writeMicroseconds(1500);
@@ -398,13 +408,13 @@ void loop()
 
           }
 
+*/
 
 
 
 
 
-
-          /*if (bt_Motors_Enabled)
+          if (bt_Motors_Enabled)
           {
             servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
             servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
@@ -413,7 +423,7 @@ void loop()
           {
             servo_LeftMotor.writeMicroseconds(ci_Left_Motor_Stop);
             servo_RightMotor.writeMicroseconds(ci_Right_Motor_Stop);
-          }*/
+          }
 #ifdef DEBUG_MOTORS
           Serial.print("Motors enabled: ");
           Serial.print(bt_Motors_Enabled);

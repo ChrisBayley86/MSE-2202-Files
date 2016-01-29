@@ -335,7 +335,7 @@ void loop()
 
           }
           **************************************************************************************/
-/*
+
 
           if (bt_Motors_Enabled) {
              
@@ -402,27 +402,14 @@ void loop()
 
           }
 
-*/
-
-
-          /*****************************************************************
-          Outline for Line Tracking Logic
-          Method 2: Add code in statement by statement
-
-          If (R) turn L
-
-          ******************************************************************/
-          /*if (bt_Motors_Enabled) {
-            //If read R, turn right
-            if (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ui_Line_Tracker_Tolerance)) {
-              servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-              servo_RightMotor.writeMicroseconds(1500);
-            }
-          }*/
 
 
 
-          /*
+        
+
+
+/*
+          
             if (bt_Motors_Enabled)
             {
               servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);

@@ -283,6 +283,10 @@ void loop()
         unsigned int currentCondition = 0;
         unsigned int previousTime = millis();
 
+        unsigned int ui_Left_On_Yellow;
+        unsigned int ui_Middle_On_Yellow;
+        unsigned int ui_Right_On_Yellow;
+
 
 
         if (bt_3_S_Time_Up)
@@ -335,51 +339,49 @@ void loop()
 
           }
           **************************************************************************************/
-
+          ui_Left_On_Yellow = (ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance));
+          ui_Middle_On_Yellow = (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ui_Line_Tracker_Tolerance));
+          ui_Right_On_Yellow = (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ui_Line_Tracker_Tolerance));
 
           if (bt_Motors_Enabled) {
-             
+
             //Serial.print("Past: ");
             //Serial.println(pastCondition);
-            
-            
+
+
             //If nothing
-            if ( !(
-                   (ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
-                   || (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
-                   || (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
-                 ) ) {
+            if ( !((ui_Left_On_Yellow)|| (ui_Middle_On_Yellow) || (ui_Right_On_Yellow)) ) {
 
               Serial.println("Nothing");
-             /* pastCondition = currentCondition;
-              currentCondition = 0;
+              /* pastCondition = currentCondition;
+               currentCondition = 0;
 
-              if (pastCondition == 1) {
-                //Turn L
-                servo_LeftMotor.writeMicroseconds(1300);
-                servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
-                Serial.println("Turn Left");
-              }
-              else if (pastCondition == 3) {
-                //Turn R
-                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-                servo_RightMotor.writeMicroseconds(1500);
-                Serial.println("Turn Right");
-              }
-              else {*/
-                //Spin L
-                servo_LeftMotor.writeMicroseconds(1300);
-                servo_RightMotor.writeMicroseconds(1700);
+               if (pastCondition == 1) {
+                 //Turn L
+                 servo_LeftMotor.writeMicroseconds(1300);
+                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
+                 Serial.println("Turn Left");
+               }
+               else if (pastCondition == 3) {
+                 //Turn R
+                 servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
+                 servo_RightMotor.writeMicroseconds(1500);
+                 Serial.println("Turn Right");
+               }
+               else {*/
+              //Spin L
+              servo_LeftMotor.writeMicroseconds(1300);
+              servo_RightMotor.writeMicroseconds(1700);
               //}
             }
             //If something (either L, M or R)
-            else if ((ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
-                     || (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
-                     || (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))) {
+            else if ((ui_Left_On_Yellow)
+                     || (ui_Middle_On_Yellow)
+                     || (ui_Right_On_Yellow)) {
               servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
               servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
               //If L
-              if (ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance)) {
+              if (ui_Left_On_Yellow) {
                 pastCondition = currentCondition;
                 currentCondition = 1;
                 Serial.println("Left");
@@ -387,17 +389,17 @@ void loop()
                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
               }
               //If M
-              else if (ui_Middle_Line_Tracker_Data < (ui_Middle_Line_Tracker_Dark - ui_Line_Tracker_Tolerance)) {
+              else if (ui_Middle_On_Yellow) {
                 pastCondition = currentCondition;
                 currentCondition = 2;
                 Serial.println("Middle");
               }
               //If R
-              else if (ui_Right_Line_Tracker_Data < (ui_Right_Line_Tracker_Dark - ui_Line_Tracker_Tolerance)) {
+              else if (ui_Right_On_Yellow) {
                 pastCondition = currentCondition;
                 currentCondition = 3;
                 Serial.println("Right");
-                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed+400);
+                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed + 400);
                 servo_RightMotor.writeMicroseconds(1300);
               }
             }
@@ -407,22 +409,22 @@ void loop()
 
 
 
-        
 
 
-/*
-          
-            if (bt_Motors_Enabled)
-            {
-              servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-              servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
-            }
-            else
-            {
-              servo_LeftMotor.writeMicroseconds(ci_Left_Motor_Stop);
-              servo_RightMotor.writeMicroseconds(ci_Right_Motor_Stop);
-            }
-            */
+
+          /*
+
+                      if (bt_Motors_Enabled)
+                      {
+                        servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
+                        servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
+                      }
+                      else
+                      {
+                        servo_LeftMotor.writeMicroseconds(ci_Left_Motor_Stop);
+                        servo_RightMotor.writeMicroseconds(ci_Right_Motor_Stop);
+                      }
+                      */
 
 #ifdef DEBUG_MOTORS
           Serial.print("Motors enabled: ");

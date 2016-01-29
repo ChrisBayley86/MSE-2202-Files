@@ -339,8 +339,10 @@ void loop()
 
           if (bt_Motors_Enabled) {
              
-            Serial.print("Past: ");
-            Serial.println(pastCondition);
+            //Serial.print("Past: ");
+            //Serial.println(pastCondition);
+            
+            
             //If nothing
             if ( !(
                    (ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
@@ -349,12 +351,12 @@ void loop()
                  ) ) {
 
               Serial.println("Nothing");
-              pastCondition = currentCondition;
+             /* pastCondition = currentCondition;
               currentCondition = 0;
 
               if (pastCondition == 1) {
                 //Turn L
-                servo_LeftMotor.writeMicroseconds(1500);
+                servo_LeftMotor.writeMicroseconds(1300);
                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
                 Serial.println("Turn Left");
               }
@@ -364,11 +366,11 @@ void loop()
                 servo_RightMotor.writeMicroseconds(1500);
                 Serial.println("Turn Right");
               }
-              else {
+              else {*/
                 //Spin L
                 servo_LeftMotor.writeMicroseconds(1300);
                 servo_RightMotor.writeMicroseconds(1700);
-              }
+              //}
             }
             //If something (either L, M or R)
             else if ((ui_Left_Line_Tracker_Data < (ui_Left_Line_Tracker_Dark - ui_Line_Tracker_Tolerance))
@@ -395,8 +397,8 @@ void loop()
                 pastCondition = currentCondition;
                 currentCondition = 3;
                 Serial.println("Right");
-                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-                servo_RightMotor.writeMicroseconds(1500);
+                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed+400);
+                servo_RightMotor.writeMicroseconds(1300);
               }
             }
 

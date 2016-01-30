@@ -350,50 +350,45 @@ void loop()
 
 
             //If nothing
-            if ( !((ui_Left_On_Yellow)|| (ui_Middle_On_Yellow) || (ui_Right_On_Yellow)) ) {
+            if ( !((ui_Left_On_Yellow) || (ui_Middle_On_Yellow) || (ui_Right_On_Yellow)) ) {
 
               Serial.println("Nothing");
-              /* pastCondition = currentCondition;
-               currentCondition = 0;
 
-               if (pastCondition == 1) {
-                 //Turn L
-                 servo_LeftMotor.writeMicroseconds(1300);
-                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
-                 Serial.println("Turn Left");
-               }
-               else if (pastCondition == 3) {
-                 //Turn R
-                 servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-                 servo_RightMotor.writeMicroseconds(1500);
-                 Serial.println("Turn Right");
-               }
-               else {*/
               //Spin L
               servo_LeftMotor.writeMicroseconds(1300);
               servo_RightMotor.writeMicroseconds(1700);
-              //}
+
+            }
+
+            //If all activated, stop
+            else if ((ui_Left_On_Yellow) && (ui_Middle_On_Yellow) && (ui_Right_On_Yellow)) {
+              servo_LeftMotor.writeMicroseconds(1500);
+              servo_RightMotor.writeMicroseconds(1500);
             }
             //If something (either L, M or R)
-            else if ((ui_Left_On_Yellow)
-                     || (ui_Middle_On_Yellow)
-                     || (ui_Right_On_Yellow)) {
-              servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
-              servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
+            else if ((ui_Left_On_Yellow) || (ui_Middle_On_Yellow) || (ui_Right_On_Yellow)) {
+
+              // If L&M or M&R
+              if ((ui_Left_On_Yellow && ui_Middle_On_Yellow) || (ui_Middle_On_Yellow && ui_Right_On_Yellow)) {
+                servo_LeftMotor.writeMicroseconds(ui_Left_Motor_Speed);
+                servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
+              }
               //If L
-              if (ui_Left_On_Yellow) {
+              else if (ui_Left_On_Yellow) {
                 pastCondition = currentCondition;
                 currentCondition = 1;
                 Serial.println("Left");
                 servo_LeftMotor.writeMicroseconds(1500);
                 servo_RightMotor.writeMicroseconds(ui_Right_Motor_Speed);
               }
+
               //If M
               else if (ui_Middle_On_Yellow) {
                 pastCondition = currentCondition;
                 currentCondition = 2;
                 Serial.println("Middle");
               }
+
               //If R
               else if (ui_Right_On_Yellow) {
                 pastCondition = currentCondition;

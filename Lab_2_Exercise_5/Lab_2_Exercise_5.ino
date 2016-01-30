@@ -144,7 +144,7 @@ void loop () {
 
       } //end for 4
 
-      if (state > (numPins * 3 / 2)) {
+      /*if (state > (numPins * 3 / 2)) {
         if (digitalRead(pins[0][0]) == HIGH) {
           transferIVar = 0;
         }
@@ -158,7 +158,7 @@ void loop () {
           transferIVar = 3;
         }
       }
-      else if (state < (numPins*3/2)) {
+      else if (state <= (numPins*3/2)) {
         if (digitalRead(pins[3][0]) == HIGH) {
           transferIVar = 3;
         }
@@ -171,7 +171,7 @@ void loop () {
         else if (digitalRead(pins[0][0]) == HIGH) {
           transferIVar = 0;
         }
-      }
+      }*/
 
       angle = (maxRange / numPins) * (transferIVar);
       servo_One.write(angle);

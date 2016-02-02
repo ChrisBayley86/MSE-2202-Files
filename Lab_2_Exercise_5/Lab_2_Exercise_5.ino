@@ -108,15 +108,7 @@ void loop () {
 
       } //end for 4
 
-      //Update the servo position
-      if (state <= ((numPins * 3) / 2)) {
-        angle = state * angleIncrement;
-      }
-      else if (state > ((numPins * 3) / 2) ) {
-        angle = (12 - state) * angleIncrement;
-      }
-      servo_One.write(angle);
-
+      
 
 
       //Reset the state counter
@@ -125,6 +117,20 @@ void loop () {
       } //end if 5
       steadyTime = millis();
       state++;
+      
+      
+      //Update the servo position
+      if (state <= ((numPins * 3) / 2)) {
+        angle = state * angleIncrement;
+      }
+      else if (state > ((numPins * 3) / 2) ) {
+        angle = (numPins*3 - state) * angleIncrement;
+      }
+      servo_One.write(angle);
+
+      
+      
+      
     } //end if 1
 
 

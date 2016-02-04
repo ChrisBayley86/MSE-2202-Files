@@ -165,7 +165,6 @@ void loop () {
   } //end for 2
   i = 0;
 
-
   if (Serial.available()) {
     servo_One.write(Serial.read());
   }

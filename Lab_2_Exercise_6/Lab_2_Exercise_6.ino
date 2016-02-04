@@ -1,4 +1,4 @@
-//Lab 2 Exercise 6
+//Lab 2 Exercise 5
 //by Chris Bayley
 
 //This version is setup so that it should be easier to add in another LED
@@ -33,11 +33,6 @@ void setup() {
   digitalWrite(pin2, LOW);
   digitalWrite(pin3, LOW);
   digitalWrite(pin4, LOW);
-  //digitalWrite(button, HIGH);
-  //digitalWrite(dpdtSwitch, HIGH);
-  //the above line enables the internal
-  //pull-up resistor.
-
 }
 
 void loop () {
@@ -51,9 +46,6 @@ void loop () {
   //2nd row is pin life
   //3rd row is turn-on state 1
   //4th row is turn-on state 2
-
-
-
 
   //Filling the pins array
   for (int i = 0; i < numPins; i++) { //Begin for 1
@@ -69,9 +61,6 @@ void loop () {
   pins[0][2] = 1; //Pin 1 starts at life of 1 because it
   //is turned back on at state 12
 
-
-
-
   //Declares some initial variables
   long steadyTime = millis();
   long tempTime = 0;
@@ -80,7 +69,6 @@ void loop () {
   int ledDuration = 3;
   int stateLock = 0; //0 = OPEN, 1 = LOCKED
   int increment = 5; //How much the tempTime increments by.
-  int transferIVar = 0;
 
   //Potentiometer pin setup
   const int pot = A0;
@@ -93,33 +81,21 @@ void loop () {
   servo_One.attach(9);
   unsigned int maxRange = 180;
   unsigned int angle = 0;
+  unsigned int angleIncrement = maxRange / numPins;
+  unsigned int i = 0;
 
 
   for (int state = 0; state <= numPins * 3;) { //begin for 2
     if ((millis() - steadyTime) >= timeDifference) { //begin if 1
 
-
-      /*
-      Serial.print("State: ");
-      Serial.println(state);
-      */
-
-
       //Loop-checking of the i-th pin's state.
-      for (int i = 0; i <= numPins; i++) { //begin for 4
+      for (/*int i = 0*/; i <= numPins; i++) { //begin for 4
 
+        //Turning on an LED based on it's turn-on state(s).
         if ( (state == pins[i][3]) || (state == pins[i][4]) ) { //begin if 2
           digitalWrite(pins[i][0], HIGH);
-          //transferIVar = i;
-
+          servo_One.write(angleIncrement * i);
         } // end if 2
-
-
-        /*if (digitalRead(pins[i][0])== HIGH) {
-          angle = (maxRange / numPins) * (i+1);
-          servo_One.write(angle);
-        }*/
-
 
         //Resetting the LED life
         if ( pins[i][2] > ledLifeDuration ) { //begin if 3
@@ -132,57 +108,9 @@ void loop () {
           pins[i][2] = pins[i][2] + 1;
         } //end if 4
 
-        /*
-        Serial.print(i);
-        Serial.print(": ");
-        Serial.print(digitalRead(pins[i][0]));
-        Serial.print(" Life: ");
-        Serial.println(pins[i][2]);
-        */
-
-
-
       } //end for 4
 
-      if (state > (numPins * 3 / 2)) {
-        if (digitalRead(pins[0][0]) == HIGH) {
-          transferIVar = 0;
-        }
-        else if (digitalRead(pins[1][0]) == HIGH) {
-          transferIVar = 1;
-        }
-        else if (digitalRead(pins[2][0]) == HIGH) {
-          transferIVar = 2;
-        }
-        else if (digitalRead(pins[3][0]) == HIGH) {
-          transferIVar = 3;
-        }
-      }
-      else if (state < (numPins*3/2)) {
-        if (digitalRead(pins[3][0]) == HIGH) {
-          transferIVar = 3;
-        }
-        else if (digitalRead(pins[2][0]) == HIGH) {
-          transferIVar = 2;
-        }
-        else if (digitalRead(pins[1][0]) == HIGH) {
-          transferIVar = 1;
-        }
-        else if (digitalRead(pins[0][0]) == HIGH) {
-          transferIVar = 0;
-        }
-      }
-
-      angle = (maxRange / numPins) * (transferIVar + 1);
-      servo_One.write(angle);
-
-      Serial.print("Angle: ");
-      Serial.print(angle);
-      Serial.print(" State: ");
-      Serial.print(state);
-      Serial.print(" TIV: ");
-      Serial.println(transferIVar);
-      Serial.println();
+      
 
 
       //Reset the state counter
@@ -191,23 +119,57 @@ void loop () {
       } //end if 5
       steadyTime = millis();
       state++;
+      
+      
+      //Update the servo position
+      if (state < ((numPins * 3) / 2)) {
+        angle = state * angleIncrement;
+      }
+      else if (state == ((numPins * 3) /2 ) ) {
+        angle = 180;
+      }
+      else if (state < (numPins * 3) ) {
+        angle = (numPins*3 - state) * angleIncrement;
+      }
+      else if (state == (numPins * 3)) {
+        angle = 0;
+      }
+      
+      Serial.write(angle);
+      //angle = angleIncrement * lastPinOn;
+      
+      //servo_One.write(angle);
+
+      
+      
+      
     } //end if 1
+
 
     //Changes the method of setting the timeDifference
     if ( (digitalRead(dpdtSwitch) == LOW) /*&& (stateLock == 0)*/ && (digitalRead(button) == LOW) ) {
-
       tempTime += increment;
       timeDifference = tempTime;
     }
     else if ( (digitalRead(dpdtSwitch) == LOW) /*&& (stateLock == 1)*/ && (digitalRead(button) == HIGH) ) {
-      //stateLock = 0;
       tempTime = 0;
     }
     else if ( (digitalRead(dpdtSwitch) == HIGH) && (stateLock == 0) ) {
       timeDifference = analogRead(pot);
     }
-    
+
+
+
+
+
   } //end for 2
+  i = 0;
 
-}
 
+  if (Serial.available()) {
+    servo_One.write(Serial.read());
+  }
+
+
+
+} //end void loop
